@@ -10,6 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+
 import java.util.ArrayList;
 
 
@@ -34,17 +41,18 @@ public class BookListAdapter extends ArrayAdapter<Book>{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-      String title = getItem(position).getBookname();
-      String author = getItem(position).getAuthor();
-      String isbn = getItem(position).getNumber();
-      String image = getItem(position).getPicture();
+        loadingPic();
+        String title = getItem(position).getBookname();
+        String author = getItem(position).getAuthor();
+        String isbn = getItem(position).getNumber();
+        String image = getItem(position).getPicture();
 
-      Book book = new Book(title,author,isbn,image);
+        Book book = new Book(title,author,isbn,image);
         final View result;
 
         ViewHolder holder;
         holder = new ViewHolder();
-      if (convertView == null){
+        if (convertView == null){
           LayoutInflater inflater = LayoutInflater.from(pcontext);
           convertView = inflater.inflate(presource,parent,false);
           TextView titleView = convertView.findViewById(R.id.title);
@@ -60,6 +68,7 @@ public class BookListAdapter extends ArrayAdapter<Book>{
           holder.title = (TextView) convertView.findViewById(R.id.title);
           holder.author = (TextView) convertView.findViewById(R.id.author);
           holder.isbn = (TextView) convertView.findViewById(R.id.ibsn);
+          holder.picture = (ImageView) convertView.findViewById(R.id.bookPic);
           convertView.setTag(holder);
       }
       else{
@@ -71,10 +80,37 @@ public class BookListAdapter extends ArrayAdapter<Book>{
         result.startAnimation(animation);
         lastPosition = position;
 
-
+        int failed = pcontext.getResources().getIdentifier("@drawable/failed",null,pcontext.getPackageName());
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true)
+                .cacheOnDisc(true).resetViewBeforeLoading(true)
+                .showImageForEmptyUri(failed)
+                .showImageOnFail(failed)
+                .showImageOnLoading(failed).build();
+        imageLoader.displayImage(image,holder.picture,options);
         holder.title.setText(title);
         holder.author.setText(author);
         holder.isbn.setText(isbn);
         return convertView;
     }
+
+
+    public void loadingPic(){
+        // UNIVERSAL IMAGE LOADER SETUP
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheOnDisc(true).cacheInMemory(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .displayer(new FadeInBitmapDisplayer(300)).build();
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                pcontext)
+                .defaultDisplayImageOptions(defaultOptions)
+                .memoryCache(new WeakMemoryCache())
+                .discCacheSize(100 * 1024 * 1024).build();
+
+        ImageLoader.getInstance().init(config);
+        // END - UNIVERSAL IMAGE LOADER SETUP
+    }
 }
+
+
