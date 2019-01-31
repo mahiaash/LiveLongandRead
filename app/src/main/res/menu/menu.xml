@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn = "navigation_view">
+    <group android:checkableBehavior="single">     <!--So you can click on only one thing at a time -->
+         <item android:id="@+id/borrowed"
+             android:title="Shelf"
+             android:icon="@drawable/ic_book_icon"
+             />
+        <item android:id="@+id/notification"
+            android:title="Notification"
+            android:icon="@drawable/ic_notifications_icon"
+        />
+        <item android:id="@+id/library"
+            android:title="Library"
+            android:icon="@drawable/ic_library_icon"
+        />
+        <item android:id="@+id/askLibrarian"
+            android:title="Ask a Librarian"
+            android:icon="@drawable/ic_librarian"
+        />
+    </group>
+
+   <!-- <item android:title="Custimization"></item>
+        <menu>
+            <item android:id="@+id/profile"
+                android:title="Profile"
+                android:icon="@drawable/ic_profile_icon"
+            />
+            <item android:id="@+id/settings"
+                android:title="Settings"
+                android:icon="@drawable/ic_settings_icon"
+            />
+        </menu>
+-->
+
+
+    <!--To create sub sections create a group and instead of giving
+     checkable behaviors you can just give it a title and have things organized that
+     way -->
+
+
+
+
+
+</menu>
