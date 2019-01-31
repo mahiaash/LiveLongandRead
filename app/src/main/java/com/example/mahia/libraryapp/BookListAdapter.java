@@ -38,7 +38,7 @@ public class BookListAdapter extends ArrayAdapter<Book>{
         pcontext = context;
         presource = resource;
     }
-
+    // Overlays the views
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         loadingPic();
@@ -80,6 +80,11 @@ public class BookListAdapter extends ArrayAdapter<Book>{
         result.startAnimation(animation);
         lastPosition = position;
 
+        /*
+
+        Default image
+
+        */
         int failed = pcontext.getResources().getIdentifier("@drawable/failed",null,pcontext.getPackageName());
         ImageLoader imageLoader = ImageLoader.getInstance();
         DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true)
